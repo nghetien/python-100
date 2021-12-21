@@ -1,0 +1,72 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:get/state_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../models/models.dart';
+import '../../../widgets/widgets.dart';
+import '../../../services/services.dart';
+import '../../../constants/constants.dart';
+import '../../../helpers/helpers.dart';
+import '../../pages.dart';
+
+class CourseDetailController extends GetxController {
+  Rx<Course> courseInfo = Rx<Course>(Course.emptyCourse());
+  RxList<CourseItem> listCourseItem = RxList<CourseItem>([]);
+
+  final int idCourse;
+  final BuildContext myContext;
+
+  final CustomLoader _loader = CustomLoader();
+
+  CourseDetailController({required this.myContext, required this.idCourse});
+
+  @override
+  void onInit() {
+    super.onInit();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      fetchData();
+    });
+  }
+
+  Future<void> fetchData() async{
+    await Future.wait([fetchInfoCourse(), fetchCurriculumCourse()]);
+  }
+
+  Future<void> fetchInfoCourse() async {
+    DataResponse res = await getInfoCourseResponse(idCourse.toString());
+    if (res.status) {
+      courseInfo.value = Course.createACourseFromJson(res.data["data"]);
+    } else {
+      showSnackBar(myContext, message: AppLocalizations.of(myContext)!.load_data_fail, backgroundColor: $errorColor);
+    }
+  }
+
+  Future<void> fetchCurriculumCourse() async {
+    DataResponse res = await getCurriculumCourseResponse(idCourse.toString());
+    if (res.status) {
+      listCourseItem.value = CourseItem.createListCourseItem(res.data["data"]);
+    } else {
+      showSnackBar(myContext, message: AppLocalizations.of(myContext)!.load_data_fail, backgroundColor: $errorColor);
+    }
+  }
+
+  Future<void> joinCourse() async {
+    _loader.showLoader(myContext);
+    DataResponse res = await enrollCourseResponse(courseInfo.value.id.toString());
+    if(res.status){
+      await fetchData();
+      Navigator.pushReplacementNamed(
+        myContext,
+        UrlRoutes.$lessonDetails,
+        arguments: LessonDetailsPage(
+          currentCourse: courseInfo.value,
+          listCourseItem: listCourseItem,
+        ),
+      );
+    }else{
+      showSnackBar(myContext, message: AppLocalizations.of(myContext)!.join_course_fail, backgroundColor: $errorColor);
+    }
+    _loader.hideLoader();
+  }
+}

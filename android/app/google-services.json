@@ -1,0 +1,215 @@
+{
+  "project_info": {
+    "project_number": "112036722412",
+    "project_id": "ucode-326108",
+    "storage_bucket": "ucode-326108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112036722412:android:7e2f8b66146f7cffd297c9",
+        "android_client_info": {
+          "package_name": "com.ucode.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112036722412-24dbf9m67i8veg04blrk87r1lebn71mf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucode.mobile",
+            "certificate_hash": "6c9f6cfc9af83f656de2ec309c82af406856ef66"
+          }
+        },
+        {
+          "client_id": "112036722412-5kmm68q3d7bvebal4j6pp906aa91jnf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucode.mobile",
+            "certificate_hash": "018f5c2f7e5f9619bffadfac4e8d96396b06366f"
+          }
+        },
+        {
+          "client_id": "112036722412-eprucfsdhvge1t1l495c4ia19tavvt3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucode.mobile",
+            "certificate_hash": "45b6a4e270a6f3b5ef0d830e326a4f4d1316fbd0"
+          }
+        },
+        {
+          "client_id": "112036722412-nq7qm6eqq5e8f8r0hdfdtldkqif73ttl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucode.mobile",
+            "certificate_hash": "649133a4f291143df3d4011322156cf2e845f991"
+          }
+        },
+        {
+          "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdixdMij5qoOl7RIQ4FVFlSiGypHymQkQ"
+        },
+        {
+          "current_key": "AIzaSyB5giajJs8fGA7Fe99IkF1lAL02jhlGC_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "112036722412-33g2sd8q4tuvnkk1baln8r6nl209tkn8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uschool.mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112036722412:android:7554a25eeb4292fed297c9",
+        "android_client_info": {
+          "package_name": "com.uschool.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112036722412-1d4bgmc97e97ajeitvgrccorb03loqlb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.mobile",
+            "certificate_hash": "649133a4f291143df3d4011322156cf2e845f991"
+          }
+        },
+        {
+          "client_id": "112036722412-be20rb7lhmrsaq0l1th88pfsjrbnsipt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.mobile",
+            "certificate_hash": "efd67ca2d61f3cb683b8ef4938645bf1c954685c"
+          }
+        },
+        {
+          "client_id": "112036722412-f3a1ho5etkadc5cscu6j8ac2gqb3khgl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.mobile",
+            "certificate_hash": "018f5c2f7e5f9619bffadfac4e8d96396b06366f"
+          }
+        },
+        {
+          "client_id": "112036722412-fqeuvcttit8ucgm0bvh8d2h7kdhe4jks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.mobile",
+            "certificate_hash": "6c9f6cfc9af83f656de2ec309c82af406856ef66"
+          }
+        },
+        {
+          "client_id": "112036722412-jiubqvbqfduos89isfk9ght84g8jteqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.mobile",
+            "certificate_hash": "45b6a4e270a6f3b5ef0d830e326a4f4d1316fbd0"
+          }
+        },
+        {
+          "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdixdMij5qoOl7RIQ4FVFlSiGypHymQkQ"
+        },
+        {
+          "current_key": "AIzaSyB5giajJs8fGA7Fe99IkF1lAL02jhlGC_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "112036722412-33g2sd8q4tuvnkk1baln8r6nl209tkn8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uschool.mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112036722412:android:f0648974b18846c0d297c9",
+        "android_client_info": {
+          "package_name": "com.uschool.python101"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112036722412-8g8rfrv0cmksj4a2p1vuc0jkcg483nti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.python101",
+            "certificate_hash": "bc63c156979934805a4e405ad6a9913d568fd7a0"
+          }
+        },
+        {
+          "client_id": "112036722412-8s630bggcskb60ejruu3pi8mq669p5b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uschool.python101",
+            "certificate_hash": "6c9f6cfc9af83f656de2ec309c82af406856ef66"
+          }
+        },
+        {
+          "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdixdMij5qoOl7RIQ4FVFlSiGypHymQkQ"
+        },
+        {
+          "current_key": "AIzaSyB5giajJs8fGA7Fe99IkF1lAL02jhlGC_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112036722412-7uuq92ri29vivdi680baubmi8ilb2hla.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "112036722412-33g2sd8q4tuvnkk1baln8r6nl209tkn8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uschool.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

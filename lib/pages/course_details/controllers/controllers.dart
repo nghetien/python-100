@@ -1,0 +1,1 @@
+export 'course_details_controller.dart';

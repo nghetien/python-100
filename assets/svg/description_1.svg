@@ -1,0 +1,66 @@
+<svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="filter0_ii" x="-0.53069" y="-0.53069" width="69.0614" height="69.0614" filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+            <feOffset dx="0.53069" dy="0.53069" />
+            <feGaussianBlur stdDeviation="0.265345" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.2 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+            <feOffset dx="-0.53069" dy="-0.53069" />
+            <feGaussianBlur stdDeviation="0.265345" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+            <feBlend mode="normal" in2="effect1_innerShadow" result="effect2_innerShadow" />
+        </filter>
+        <filter id="filter1_dii" x="7.522" y="11.2135" width="52.9567" height="52.9567" filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+            <feOffset dy="3.69176" />
+            <feGaussianBlur stdDeviation="3.38411" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0.8375 0 0 0 0 0.201 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+            <feOffset dy="-2.46117" />
+            <feGaussianBlur stdDeviation="1.53823" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0.8125 0 0 0 0 0.423448 0 0 0 0 0.0643229 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+            <feOffset dy="-0.922939" />
+            <feGaussianBlur stdDeviation="0.615293" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="effect2_innerShadow" result="effect3_innerShadow" />
+        </filter>
+        <linearGradient id="paint0_linear" x1="34" y1="0" x2="34" y2="68" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFA25F" />
+            <stop offset="1" stop-color="#FFA458" />
+        </linearGradient>
+        <linearGradient id="paint1_linear" x1="34" y1="0" x2="34" y2="68" gradientUnits="userSpaceOnUse">
+            <stop offset="0.328125" stop-color="white" />
+            <stop offset="1" stop-opacity="0.1" />
+        </linearGradient>
+    </defs>
+    <g filter="url(#filter0_ii)">
+        <rect width="68" height="68" rx="14.7826" fill="url(#paint0_linear)" />
+        <rect width="68" height="68" rx="14.7826" fill="url(#paint1_linear)" fill-opacity="0.2"
+            style="mix-blend-mode:soft-light" />
+    </g>
+    <g filter="url(#filter1_dii)">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M53.6938 34.82C53.7049 34.5481 53.7105 34.2747 53.7105 34.0001C53.7105 23.1144 44.886 14.2899 34.0004 14.2899C23.1148 14.2899 14.2902 23.1144 14.2902 34.0001C14.2902 44.8857 23.1148 53.7102 34.0004 53.7102C38.4374 53.7102 42.532 52.2441 45.8262 49.7698C45.8271 51.9462 47.5916 53.7102 49.7682 53.7102C51.9453 53.7102 53.7102 51.9453 53.7102 49.7681V35.1826C53.7102 35.0604 53.7047 34.9394 53.6938 34.82ZM34.0004 45.8298C27.467 45.8298 22.1706 40.5335 22.1706 34.0001C22.1706 27.4667 27.467 22.1703 34.0004 22.1703C40.5338 22.1703 45.8301 27.4667 45.8301 34.0001C45.8301 40.5335 40.5338 45.8298 34.0004 45.8298Z"
+            fill="white" />
+    </g>
+</svg>
