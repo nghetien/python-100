@@ -3,19 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../../pages.dart';
 import '../models/models.dart';
 import '../../../../constants/constants.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../../helpers/helpers.dart';
+import '../../../../states/states.dart';
+import '../../../../models/models.dart';
 import '../../../../components/components.dart';
 
 class HistoryCodeEditor extends StatefulWidget {
+  final QuestionData questionData;
+  final int? quizId;
   final String tagController;
 
   const HistoryCodeEditor({
     Key? key,
+    required this.questionData,
+    this.quizId,
     required this.tagController,
   }) : super(key: key);
 
@@ -25,7 +32,7 @@ class HistoryCodeEditor extends StatefulWidget {
 
 class _HistoryCodeEditorState extends State<HistoryCodeEditor> {
   final CustomLoader _loader = CustomLoader();
-  final HistorySubmissionController _historySubmissionController = Get.find<HistorySubmissionController>();
+  late final HistorySubmissionController _historySubmissionController;
   late final CodeEditorController _codeEditorController;
   final CodeController historyController = CodeController(
     theme: atomOneLightTheme,
@@ -33,11 +40,17 @@ class _HistoryCodeEditorState extends State<HistoryCodeEditor> {
 
   @override
   void initState() {
+    _historySubmissionController = Get.put(
+      HistorySubmissionController(
+        myContext: context,
+        questionData: widget.questionData,
+        quizId: widget.quizId,
+      ),
+    );
     _codeEditorController = Get.find<CodeEditorController>(tag: widget.tagController);
-    if (_historySubmissionController.isLoadData.value) {
-      _historySubmissionController.fetchHistorySubmission();
-    } else {
-      _historySubmissionController.reloadHistorySubmission();
+    if (!_historySubmissionController.isLoadData.value) {
+      final User currentUser = context.read<AuthState>().getUserModel;
+      _historySubmissionController.reloadHistorySubmission(currentUser.id);
     }
     super.initState();
   }
@@ -227,7 +240,8 @@ class _HistoryCodeEditorState extends State<HistoryCodeEditor> {
                 backgroundColor: $green100,
                 onRefresh: () async {
                   /// Refresh data
-                  await _historySubmissionController.reloadHistorySubmission();
+                  final User currentUser = context.read<AuthState>().getUserModel;
+                  await _historySubmissionController.reloadHistorySubmission(currentUser.id);
                 },
                 child: ListView.separated(
                   separatorBuilder: (_, index) =>

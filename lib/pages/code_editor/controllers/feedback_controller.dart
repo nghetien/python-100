@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/state_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/models.dart';
-import '../../lesson_details/models/models.dart';
 import '../../../../constants/constants.dart';
 import '../../../../services/services.dart';
 import '../../../../widgets/widgets.dart';
@@ -11,14 +11,14 @@ import '../../../../widgets/widgets.dart';
 class FeedbackController extends GetxController {
   /// init
   final BuildContext myContext;
-  final QuestionData questionData;
+  final int? questionId;
   final int? courseId;
   final int? lessonId;
 
 
   FeedbackController({
     required this.myContext,
-    required this.questionData,
+    this.questionId,
     this.courseId,
     this.lessonId,
   });
@@ -34,14 +34,23 @@ class FeedbackController extends GetxController {
   RxList<Comment> listComment = RxList<Comment>([]);
   RxInt currentCommentId = RxInt(-1);
 
+  @override
+  void onInit() {
+    super.onInit();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      fetchFeedbackSubmission();
+    });
+  }
+
   Future<void> fetchFeedbackSubmission() async {
-    DataResponse res = await getFeedbackSubmissionResponse({
-      "course_id": courseId.toString(),
-      "lesson_item_id": lessonId.toString(),
-      "question_id": questionData.id.toString(),
+    Map<String, String> filters = {
       "page": "1",
       "pageSize": "10",
-    });
+    };
+    if(courseId != null) filters["course_id"] = courseId.toString();
+    if(lessonId != null) filters["lesson_item_id"] = lessonId.toString();
+    if(questionId != null) filters["question_id"] = questionId.toString();
+    DataResponse res = await getFeedbackSubmissionResponse(filters);
     if (res.status) {
       page.value = res.metaData!["current_page"];
       maxPage.value = (res.metaData!["total_items"] / 10).ceil(); // Default pageSize = 10
@@ -55,13 +64,14 @@ class FeedbackController extends GetxController {
   }
 
   Future<void> loadFeedbackSubmission() async {
-    DataResponse res = await getFeedbackSubmissionResponse({
-      "course_id": courseId.toString(),
-      "lesson_item_id": lessonId.toString(),
-      "question_id": questionData.id.toString(),
+    Map<String, String> filters = {
       "page": "1",
       "pageSize": "10",
-    });
+    };
+    if(courseId != null) filters["course_id"] = courseId.toString();
+    if(lessonId != null) filters["lesson_item_id"] = lessonId.toString();
+    if(questionId != null) filters["question_id"] = questionId.toString();
+    DataResponse res = await getFeedbackSubmissionResponse(filters);
     if (res.status) {
       page.value = res.metaData!["current_page"];
       maxPage.value = (res.metaData!["total_items"] / 10).ceil(); // Default pageSize = 10
@@ -77,13 +87,14 @@ class FeedbackController extends GetxController {
       return;
     }
     isLoadMore.value = true;
-    DataResponse res = await getFeedbackSubmissionResponse({
-      "course_id": courseId.toString(),
-      "lesson_item_id": lessonId.toString(),
-      "question_id": questionData.id.toString(),
+    Map<String, String> filters = {
       "page": (page.value + 1).toString(),
       "pageSize": "10",
-    });
+    };
+    if(courseId != null) filters["course_id"] = courseId.toString();
+    if(lessonId != null) filters["lesson_item_id"] = lessonId.toString();
+    if(questionId != null) filters["question_id"] = questionId.toString();
+    DataResponse res = await getFeedbackSubmissionResponse(filters);
     if (res.status) {
       maxComment.value = res.metaData!["total_items"];
       page.value += 1;
@@ -96,14 +107,15 @@ class FeedbackController extends GetxController {
     required String value,
     required String type,
   }) async {
-    DataResponse res = await feedbackSubmissionResponse({
-      "course_id": courseId.toString(),
-      "lesson_item_id": lessonId,
+    Map<String, dynamic> formSubmit = {
       "content": value,
       "content_format": "plaintext",
-      "question_id": questionData.id,
       "type": type,
-    });
+    };
+    if(courseId != null) formSubmit["course_id"] = courseId.toString();
+    if(lessonId != null) formSubmit["lesson_item_id"] = lessonId;
+    if(questionId != null) formSubmit["question_id"] = questionId;
+    DataResponse res = await feedbackSubmissionResponse(formSubmit);
     if (res.status) {
       fetchFeedbackSubmission();
     } else {

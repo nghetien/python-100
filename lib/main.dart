@@ -15,6 +15,15 @@ void main() async {
         "course_id": "830",
       }
   );
+  // FlavorConfig(
+  //     name: "product",
+  //     variables: {
+  //       "domain": "stage.",
+  //       "reference": "ucode",
+  //       "app_name": "python101",
+  //       "course_id": "12",
+  //     }
+  // );
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     Firebase.initializeApp(),

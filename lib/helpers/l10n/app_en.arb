@@ -45,7 +45,7 @@
     "minutes": "Minutes",
     "hours": "Hours",
     "seconds": "Seconds",
-    "course_information": "Course information",
+    "course_information": "Information",
     "origin_price": "Origin price",
     "price": "Price",
     "try_course": "Try",
@@ -225,5 +225,9 @@
     "rank": "Rank",
     "diff_rank": "Different rank",
     "increase": "Increase",
-    "decrement": "Decrement"
+    "decrement": "Decrement",
+    "chapter": "Chapter",
+    "sub_chapter": "Subchapter",
+    "curriculum": "Curriculum",
+    "course_is_unlocked": "Course is unlocked"
 }

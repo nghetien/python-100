@@ -11,7 +11,7 @@ class Comment {
   final int? numLikes;
   final int numReplies;
   final int? parentId;
-  final int questionId;
+  final int? questionId;
   final int? quizSubmissionId;
   final List<Comment>? replies;
   final int? score;
@@ -36,7 +36,7 @@ class Comment {
     this.numLikes,
     required this.numReplies,
     this.parentId,
-    required this.questionId,
+    this.questionId,
     this.quizSubmissionId,
     this.replies,
     this.score,
@@ -60,7 +60,6 @@ class Comment {
       createdAt: 0,
       id: -1,
       lastReplyAt: 0,
-      questionId: -1,
       status: "",
       type: "",
       userId: -1,

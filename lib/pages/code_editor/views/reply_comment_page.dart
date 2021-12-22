@@ -14,11 +14,13 @@ import '../../../../models/models.dart';
 import '../../../../states/auth_state.dart';
 
 class ReplyCommentPage extends StatefulWidget {
+  final String tag;
   final Comment currentComment;
 
   const ReplyCommentPage({
     Key? key,
     required this.currentComment,
+    required this.tag,
   }) : super(key: key);
 
   @override
@@ -26,19 +28,21 @@ class ReplyCommentPage extends StatefulWidget {
 }
 
 class _ReplyCommentPageState extends State<ReplyCommentPage> {
-  final FeedbackController _feedbackController = Get.find<FeedbackController>();
+  late final FeedbackController _feedbackController;
   late final ReplyCommentController _replyCommentController;
   final TextEditingController _replyEditorController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    _feedbackController = Get.find<FeedbackController>(tag: widget.tag);
     _replyCommentController = Get.put(
       ReplyCommentController(
         myContext: context,
-        questionData: _feedbackController.questionData,
+        questionId: _feedbackController.questionId,
         parentComment: widget.currentComment,
       ),
+      tag: widget.tag,
     );
     super.initState();
   }
@@ -183,6 +187,7 @@ class _ReplyCommentPageState extends State<ReplyCommentPage> {
         ),
       );
     }
+    final User currentUser = context.read<AuthState>().getUserModel;
     return Container(
       margin: const EdgeInsets.only(top: 8),
       child: Row(
@@ -230,28 +235,33 @@ class _ReplyCommentPageState extends State<ReplyCommentPage> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      top: -5,
-                      right: -6,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(0),
-                          shape: const CircleBorder(),
-                          primary: Colors.transparent,
-                          onPrimary: $green200,
-                          elevation: 0,
-                        ),
-                        child: const Icon(
-                          Icons.more_horiz_rounded,
-                          color: $greyColor,
-                        ),
-                        onPressed: () {
-                          _showPopupSelectOptions(
-                            idComment: comment.id,
-                          );
-                        },
-                      ),
-                    ),
+                    comment.userId == currentUser.id
+                        ? Positioned(
+                            top: -5,
+                            right: -6,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(0),
+                                shape: const CircleBorder(),
+                                primary: Colors.transparent,
+                                onPrimary: $green200,
+                                elevation: 0,
+                              ),
+                              child: const Icon(
+                                Icons.more_horiz_rounded,
+                                color: $greyColor,
+                              ),
+                              onPressed: () {
+                                _showPopupSelectOptions(
+                                  idComment: comment.id,
+                                );
+                              },
+                            ),
+                          )
+                        : const SizedBox(
+                            height: 0,
+                            width: 0,
+                          ),
                   ],
                 ),
                 Text(
@@ -359,7 +369,7 @@ class _ReplyCommentPageState extends State<ReplyCommentPage> {
     $requestSupport
   ];
 
-  List<Map<String, String>> _listTypeComment(){
+  List<Map<String, String>> _listTypeComment() {
     return [
       {"key": $comment, "value": AppLocalizations.of(context)!.comment},
       {"key": $reportContentError, "value": AppLocalizations.of(context)!.report_content_error},
@@ -406,7 +416,9 @@ class _ReplyCommentPageState extends State<ReplyCommentPage> {
                   fontSize: Theme.of(context).textTheme.headline6!.fontSize,
                   letterSpacing: Theme.of(context).textTheme.headline6!.letterSpacing,
                   height: Theme.of(context).textTheme.headline6!.height,
-                  color: currentType == listTypeComment[index] ? $primaryColor : Theme.of(context).textTheme.bodyText2!.color,
+                  color: currentType == listTypeComment[index]
+                      ? $primaryColor
+                      : Theme.of(context).textTheme.bodyText2!.color,
                 ),
               ),
               secondary: checkStatusFeedback(type: listTypeComment[index], size: 24),

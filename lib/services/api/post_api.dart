@@ -152,6 +152,10 @@ Future<DataResponse> feedbackSubmissionResponse(Map<String, dynamic> data) async
     dataResponse = await requestApi.$post($feedbackSubmissionAPIURL, data);
     return dataResponse;
   } catch (e) {
+
+    print(">>>>> cc givay ");
+    print(e.toString());
+
     dataResponse.setResponseErrorData(e.toString());
     return dataResponse;
   }

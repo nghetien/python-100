@@ -19,8 +19,8 @@ class LessonVideo extends StatefulWidget {
 }
 
 class _LessonVideoState extends State<LessonVideo> {
-  final ScrollController _scrollController = ScrollController();
   final LessonDetailsController _lessonDetailsController = Get.find<LessonDetailsController>();
+  static const $tagFeedbackVideo = "TAG_FEEDBACK_VIDEO";
 
   _youtubePlayerVideo() {
     double pointStart = 0;
@@ -30,12 +30,12 @@ class _LessonVideoState extends State<LessonVideo> {
       final ori = (MediaQuery.of(context).orientation);
       if (_lessonDetailsController.isReloadLessonData.value) {
         return Listener(
-          onPointerDown: (moveEvent){
+          onPointerDown: (moveEvent) {
             pointStart = moveEvent.position.dy;
           },
-          onPointerUp: (moveEvent){
+          onPointerUp: (moveEvent) {
             pointUp = moveEvent.position.dy;
-            if(pointUp - pointStart > 100){
+            if (pointUp - pointStart > 100) {
               Navigator.pop(context);
             }
           },
@@ -44,7 +44,8 @@ class _LessonVideoState extends State<LessonVideo> {
             height: ori == Orientation.portrait ? size.width * 9 / 16 : size.height * 0.4,
             width: size.width,
             child: Center(
-              child: YoutubeViewer(videoUrl: _lessonDetailsController.currentLessonData.value.videoUrl ?? $videoDefault),
+              child:
+                  YoutubeViewer(videoUrl: _lessonDetailsController.currentLessonData.value.videoUrl ?? $videoDefault),
             ),
           ),
         );
@@ -63,61 +64,45 @@ class _LessonVideoState extends State<LessonVideo> {
     });
   }
 
-  _curriculumCourse() {
-    return Column(
-      children: _lessonDetailsController.listCourseItem.map<Widget>((item) {
-        return ExpandableMultiLevelLesson(
-          lessonItem: item,
-          courseInfo: _lessonDetailsController.currentCourse.value,
-        );
-      }).toList(),
-    );
-  }
-
   _showCurriculum() {
     return Expanded(
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Obx(() {
-            final Course currentCourse = _lessonDetailsController.currentCourse.value;
-            final LessonData currentLessonData = _lessonDetailsController.currentLessonData.value;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        currentCourse.name,
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
+      child: Obx(() {
+        final Course currentCourse = _lessonDetailsController.currentCourse.value;
+        final LessonData currentLessonData = _lessonDetailsController.currentLessonData.value;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      currentLessonData.name,
+                      style: Theme.of(context).textTheme.headline3,
                     ),
-                    ShowUCoinWithBorder(totalUCoin: currentLessonData.uCoin)
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  currentLessonData.name,
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const SizedBox(height: 26),
-                Text(
-                  AppLocalizations.of(context)!.list_of_lectures,
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                const SizedBox(height: 8),
-                _curriculumCourse(),
-              ],
-            );
-          }),
-        ),
-      ),
+                  ),
+                  ShowUCoinWithBorder(totalUCoin: currentLessonData.uCoin)
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Expanded(
+              child: FeedbackCodeEditor(
+                key: UniqueKey(),
+                tag: $tagFeedbackVideo + "${currentLessonData.id}",
+                courseId: currentCourse.id,
+                lessonId: currentLessonData.id,
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 
@@ -150,7 +135,7 @@ class _LessonVideoState extends State<LessonVideo> {
               btnBackLesson(
                 context: context,
                 lessonDetailsController: _lessonDetailsController,
-                handleAction:() =>  handleBtnBackAction(
+                handleAction: () => handleBtnBackAction(
                   context: context,
                   lessonDetailsController: _lessonDetailsController,
                 ),
@@ -179,7 +164,7 @@ class _LessonVideoState extends State<LessonVideo> {
               btnNextLesson(
                 context: context,
                 lessonDetailsController: _lessonDetailsController,
-                handleAction:() =>  handleBtnNextAction(
+                handleAction: () => handleBtnNextAction(
                   context: context,
                   lessonDetailsController: _lessonDetailsController,
                 ),

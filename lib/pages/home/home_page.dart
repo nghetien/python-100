@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../components/components.dart';
 import '../../constants/constants.dart';
-import '../../helpers/helpers.dart';
 import '../../models/models.dart';
-import '../../states/states.dart';
 import '../../layouts/layouts.dart';
 import '../../widgets/widgets.dart';
 import '../../services/services.dart';
@@ -58,52 +54,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   final User currentUser = context.watch<AuthState>().getUserModel;
-  //   return Scaffold(
-  //     backgroundColor: $whiteColor,
-  //     appBar: AppBar(
-  //       centerTitle: false,
-  //       title: GestureDetector(
-  //         onTap: () {},
-  //         child: const Image(
-  //           image: AssetImage($assetsImageLogoUSchool),
-  //           height: 40,
-  //         ),
-  //       ),
-  //       elevation: 0,
-  //       bottom: PreferredSize(
-  //         child: Container(
-  //           color: Theme.of(context).shadowColor,
-  //           height: 1.0,
-  //         ),
-  //         preferredSize: const Size.fromHeight(1),
-  //       ),
-  //       actions: [
-  //         Row(
-  //           children: <Widget>[
-  //             ShowUCoinWithBorder(
-  //               totalUCoin: currentUser.totalUcoin,
-  //             ),
-  //             const SizedBox(
-  //               width: 8,
-  //             ),
-  //             CircleImg(
-  //               urlImg: currentUser.avatar,
-  //               onClickImg: () {
-  //                 Navigator.pushNamed(context, UrlRoutes.$profile);
-  //               },
-  //             ),
-  //             const SizedBox(
-  //               width: 18,
-  //             ),
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //     body: _body(),
-  //   );
   @override
   Widget build(BuildContext context) {
     return Scaffold(

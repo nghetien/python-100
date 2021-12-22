@@ -144,7 +144,7 @@ class _ExpandableMultiLevelLessonState extends State<ExpandableMultiLevelLesson>
   }
 
   _body(CourseItem lesson) {
-    if (lesson.items!.isEmpty || lesson.isLessonGroup == true) {
+    if (lesson.items.isEmpty || lesson.isLessonGroup == true) {
       return _buttonItem(
         lesson: lesson,
         onPressCallBack: () async {
@@ -173,7 +173,7 @@ class _ExpandableMultiLevelLessonState extends State<ExpandableMultiLevelLesson>
           collapsedIconColor: $greyColor,
           collapsedBackgroundColor: Colors.transparent,
           childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-          children: lesson.items!.map<Widget>((item) {
+          children: lesson.items.map<Widget>((item) {
             return _body(item);
           }).toList(),
         ),

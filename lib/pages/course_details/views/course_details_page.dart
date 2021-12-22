@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,6 +28,8 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
   late CourseDetailController _courseDetailController;
   final ScrollController _scrollController = ScrollController();
 
+  static const $tagFeedbackPage = "TAG_FEEDBACK_PAGE";
+
   @override
   void initState() {
     _courseDetailController = Get.put(CourseDetailController(myContext: context, idCourse: widget.currentCourse.id));
@@ -39,6 +42,37 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     super.dispose();
   }
 
+  /// Dialog
+  //------------------------------------
+  Widget createDialogJoinCourse(BuildContext context) => CupertinoAlertDialog(
+        title: Text(
+          AppLocalizations.of(context)!.sure_join_course,
+          style: const TextStyle(fontSize: 22),
+        ),
+        content: Text(
+          _courseDetailController.courseInfo.value.name,
+          style: const TextStyle(fontSize: 16),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            child: Text(AppLocalizations.of(context)!.cancel),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(AppLocalizations.of(context)!.ok),
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+          ),
+        ],
+      );
+
+  //------------------------------------
+
+  /// Container
+  //------------------------------------
   _infoItemContainer({required String assetImage, required String title, required String value}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -69,6 +103,100 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
           ],
         )
       ],
+    );
+  }
+
+  _wrapContainer({required Widget child, bool? haveTopBar}) {
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: Column(
+        children: <Widget>[
+          haveTopBar == true
+              ? _showPassPercentage()
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+          child,
+          _showButtonPurchase(),
+        ],
+      ),
+    );
+  }
+
+  //------------------------------------
+
+  /// Item widget
+  //------------------------------------
+
+  _processPercentage() {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      height: 5,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).shadowColor,
+        borderRadius: const BorderRadius.all(Radius.circular(2)),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            height: 5,
+            width: (size.width - 36) * ((_courseDetailController.courseInfo.value.progress ?? 0) / 100),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+              color: $primaryColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _showPassPercentage() {
+    final Course currentCourse = _courseDetailController.courseInfo.value;
+    return Container(
+      padding: const EdgeInsets.all(8),
+      height: 85,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: $backgroundGreyColor,
+        border: Border(bottom: BorderSide(color: $hoverColor, width: 1.5)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          BannerImg(
+            height: 69,
+            width: 122,
+            imageBanner: currentCourse.coverImage,
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  currentCourse.name,
+                  style: Theme.of(context).textTheme.headline4,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                _processPercentage(),
+                Text(
+                  "${AppLocalizations.of(context)!.completed}: ${(currentCourse.progress ?? 0).toInt()}%",
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -128,30 +256,15 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     );
   }
 
-  Widget createDialog(BuildContext context) => CupertinoAlertDialog(
-        title: Text(
-          AppLocalizations.of(context)!.sure_join_course,
-          style: const TextStyle(fontSize: 22),
-        ),
-        content: Text(
-          _courseDetailController.courseInfo.value.name,
-          style: const TextStyle(fontSize: 16),
-        ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(AppLocalizations.of(context)!.cancel),
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-          ),
-          CupertinoDialogAction(
-            child: Text(AppLocalizations.of(context)!.ok),
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-          ),
-        ],
-      );
+  _teacherInfo() {
+    return InfoTeacher(
+      imageUrl: _courseDetailController.courseInfo.value.teacherAvatar,
+      name: _courseDetailController.courseInfo.value.teacherName,
+      width: 64,
+      height: 64,
+      radius: 34,
+    );
+  }
 
   _header() {
     final size = MediaQuery.of(context).size;
@@ -177,31 +290,45 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     if (_courseDetailController.courseInfo.value.isEmpty) {
       listItem.add(infinityLoading(context: context));
     } else {
-      Widget showPrice = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          Row(
-            children: <Widget>[
-              Text(
-                "${AppLocalizations.of(context)!.origin_price}: ",
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              originPriceWidget(context: context, originPrice: _courseDetailController.courseInfo.value.originPrice),
-            ],
+      Widget showPrice;
+      if (_courseDetailController.courseInfo.value.isPaid != true) {
+        showPrice = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Row(
+              children: <Widget>[
+                Text(
+                  "${AppLocalizations.of(context)!.origin_price}: ",
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+                originPriceWidget(context: context, originPrice: _courseDetailController.courseInfo.value.originPrice),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: <Widget>[
+                Text(
+                  "${AppLocalizations.of(context)!.price}: ",
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                priceWidget(context: context, price: _courseDetailController.courseInfo.value.price),
+              ],
+            ),
+          ],
+        );
+      } else {
+        showPrice = Container(
+          margin: const EdgeInsets.only(top: 16),
+          child: Text(
+            AppLocalizations.of(context)!.course_is_unlocked,
+            style: const TextStyle(
+              color: $primaryColor,
+              fontSize: 24,
+            ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: <Widget>[
-              Text(
-                "${AppLocalizations.of(context)!.price}: ",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              priceWidget(context: context, price: _courseDetailController.courseInfo.value.price),
-            ],
-          ),
-        ],
-      );
+        );
+      }
       listItem.add(
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +357,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                         : AppLocalizations.of(context)!.try_course,
                     onPressCallBack: () async {
                       if (_courseDetailController.courseInfo.value.isEnrolled == true) {
-                        Navigator.pushReplacementNamed(
+                        Navigator.pushNamed(
                           context,
                           UrlRoutes.$lessonDetails,
                           arguments: LessonDetailsPage(
@@ -241,7 +368,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                       } else {
                         final bool isOK = await showCupertinoDialog(
                           context: context,
-                          builder: createDialog,
+                          builder: createDialogJoinCourse,
                         );
                         if (isOK) {
                           await _courseDetailController.joinCourse();
@@ -260,38 +387,15 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     );
   }
 
-  _curriculumCourse() {
-    if (_courseDetailController.listCourseItem.isEmpty) {
-      return infinityLoading(context: context);
-    }
-    return Column(
-      children: _courseDetailController.listCourseItem.map<Widget>((item) {
-        return ExpandableMultiLevel(
-          lessonItem: item,
-          courseInfo: _courseDetailController.courseInfo.value,
-        );
-      }).toList(),
-    );
-  }
+  //------------------------------------
 
-  _teacherInfo() {
-    if (_courseDetailController.courseInfo.value.isEmpty) {
-      return infinityLoading(context: context);
-    }
-    return InfoTeacher(
-      imageUrl: _courseDetailController.courseInfo.value.teacherAvatar,
-      name: _courseDetailController.courseInfo.value.teacherName,
-      width: 64,
-      height: 64,
-      radius: 34,
-    );
-  }
-
+  /// Button
+  //------------------------------------
   _showButtonPurchase() {
     return Obx(() {
       if (_courseDetailController.courseInfo.value.isPaid != true) {
         return Container(
-          padding: const EdgeInsets.only(bottom: 16, top: 8),
+          padding: const EdgeInsets.only(bottom: 16, top: 8, left: 18, right: 18),
           color: Theme.of(context).backgroundColor,
           child: Row(
             children: <Widget>[
@@ -315,7 +419,9 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                       arguments: PaymentPage(
                         currentCourse: _courseDetailController.courseInfo.value,
                       ),
-                    );
+                    ).then((value) {
+                      _courseDetailController.fetchData();
+                    });
                   },
                 ),
               ),
@@ -331,68 +437,98 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     });
   }
 
-  _body() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              controller: _scrollController,
-              child: Obx(
-                () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _header(),
-                    const SizedBox(height: 32),
-                    Text(
-                      AppLocalizations.of(context)!.list_of_lectures,
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                    const SizedBox(height: 8),
-                    _curriculumCourse(),
-                    const SizedBox(height: 32),
-                    Text(
-                      AppLocalizations.of(context)!.teacher,
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                    const SizedBox(height: 8),
-                    _teacherInfo(),
-                    const SizedBox(height: 8),
-                  ],
+  //------------------------------------
+
+  /// Body widget
+  //------------------------------------
+  _infoCourse() {
+    return _wrapContainer(
+      child: Expanded(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          physics: const BouncingScrollPhysics(),
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _header(),
+              const SizedBox(height: 32),
+              Text(
+                AppLocalizations.of(context)!.teacher,
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              const SizedBox(height: 8),
+              _teacherInfo(),
+              const SizedBox(height: 32),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _descriptionCourse() {
+    return _wrapContainer(
+      child: Expanded(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          physics: const BouncingScrollPhysics(),
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 16,
+              ),
+              showMathJaxHtml(_courseDetailController.courseInfo.value.description),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _curriculumCourse() {
+    return _wrapContainer(
+      haveTopBar: true,
+      child: _courseDetailController.listCourseItem.isEmpty
+          ? infinityLoading(context: context)
+          : Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                physics: const BouncingScrollPhysics(),
+                controller: _scrollController,
+                child: ShowListCurriculum(
+                  scrollController: _scrollController,
                 ),
               ),
             ),
-          ),
+    );
+  }
 
-          /// check trạng thái thanh toán để hiển thị
-          _showButtonPurchase(),
-        ],
+  _commentCourse() {
+    String getDomain = FlavorConfig.instance.variables["course_id"];
+    return _wrapContainer(
+      child: Expanded(
+        child: FeedbackCodeEditor(
+          tag: $tagFeedbackPage,
+          courseId: int.parse(getDomain),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: true,
-        mouseCursor: MouseCursor.defer,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_tree),
-            label: "Mục lục",
-            backgroundColor: Colors.blueAccent,
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-            label: "Thông tin",
-            backgroundColor: Colors.blueAccent,
-          ),
-        ],
-      ),
-      body: _body(),
-    );
+    return Obx(() {
+      if (!_courseDetailController.isLoadCourseInfo.value) {
+        return infinityLoading(context: context);
+      }
+      return TabContainer(
+        info: _infoCourse(),
+        description: _descriptionCourse(),
+        curriculum: _curriculumCourse(),
+        comment: _commentCourse(),
+      );
+    });
   }
 }

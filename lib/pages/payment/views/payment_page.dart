@@ -333,13 +333,7 @@ class _PaymentPageState extends State<PaymentPage> {
           ButtonFullColorWithIconPrefix(
             textBtn: AppLocalizations.of(context)!.back_to_course,
             onPressCallBack: () {
-              Navigator.pushReplacementNamed(
-                context,
-                UrlRoutes.$courseDetails,
-                arguments: CourseDetailsPage(
-                  currentCourse: widget.currentCourse,
-                ),
-              );
+              Navigator.pop(context);
             },
             paddingBtn: const EdgeInsets.symmetric(vertical: 12),
             widthBtn: double.infinity,
@@ -447,13 +441,7 @@ class _PaymentPageState extends State<PaymentPage> {
           ButtonFullColorWithIconPrefix(
             textBtn: AppLocalizations.of(context)!.back_to_course,
             onPressCallBack: () {
-              Navigator.pushReplacementNamed(
-                context,
-                UrlRoutes.$courseDetails,
-                arguments: CourseDetailsPage(
-                  currentCourse: widget.currentCourse,
-                ),
-              );
+              Navigator.pop(context);
             },
             paddingBtn: const EdgeInsets.symmetric(vertical: 12),
             widthBtn: double.infinity,

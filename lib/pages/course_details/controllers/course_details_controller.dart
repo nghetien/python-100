@@ -11,7 +11,8 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class CourseDetailController extends GetxController {
-  Rx<Course> courseInfo = Rx<Course>(Course.emptyCourse());
+  Rx<Course> courseInfo = Rx<Course>(Course.empty);
+  RxBool isLoadCourseInfo = RxBool(false);
   RxList<CourseItem> listCourseItem = RxList<CourseItem>([]);
 
   final int idCourse;
@@ -37,6 +38,7 @@ class CourseDetailController extends GetxController {
     DataResponse res = await getInfoCourseResponse(idCourse.toString());
     if (res.status) {
       courseInfo.value = Course.createACourseFromJson(res.data["data"]);
+      isLoadCourseInfo.value = true;
     } else {
       showSnackBar(myContext, message: AppLocalizations.of(myContext)!.load_data_fail, backgroundColor: $errorColor);
     }
@@ -56,7 +58,7 @@ class CourseDetailController extends GetxController {
     DataResponse res = await enrollCourseResponse(courseInfo.value.id.toString());
     if(res.status){
       await fetchData();
-      Navigator.pushReplacementNamed(
+      Navigator.pushNamed(
         myContext,
         UrlRoutes.$lessonDetails,
         arguments: LessonDetailsPage(

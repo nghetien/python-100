@@ -13,22 +13,40 @@ import '../../../../models/models.dart';
 import '../../../../states/auth_state.dart';
 
 class FeedbackCodeEditor extends StatefulWidget {
-  const FeedbackCodeEditor({Key? key}) : super(key: key);
+  final int? courseId;
+  final int? lessonId;
+  final int? questionId;
+  final String tag;
+
+  const FeedbackCodeEditor({
+    Key? key,
+    this.courseId,
+    this.lessonId,
+    this.questionId,
+    required this.tag,
+  }) : super(key: key);
 
   @override
   _FeedbackCodeEditorState createState() => _FeedbackCodeEditorState();
 }
 
 class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
-  final FeedbackController _feedbackController = Get.find<FeedbackController>();
+  late final FeedbackController _feedbackController;
   final TextEditingController _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    if (_feedbackController.isLoadData.value) {
-      _feedbackController.fetchFeedbackSubmission();
-    } else {
+    _feedbackController = Get.put(
+      FeedbackController(
+        myContext: context,
+        questionId: widget.questionId,
+        lessonId: widget.lessonId,
+        courseId: widget.courseId,
+      ),
+      tag: widget.tag
+    );
+    if (!_feedbackController.isLoadData.value) {
       _feedbackController.loadFeedbackSubmission();
     }
     super.initState();
@@ -57,13 +75,18 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
                 _focusNodeComment.requestFocus();
               },
               child: Row(
-                children:  <Widget>[
+                children: <Widget>[
                   Text(
                     AppLocalizations.of(context)!.report,
                     style: const TextStyle(color: $errorColor),
                   ),
-                  const SizedBox(width: 8,),
-                  const Icon(Icons.info_outline_rounded, color: $errorColor,)
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  const Icon(
+                    Icons.info_outline_rounded,
+                    color: $errorColor,
+                  )
                 ],
               ),
             )
@@ -209,6 +232,7 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
         ),
       );
     }
+    final User currentUser = context.read<AuthState>().getUserModel;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -254,29 +278,34 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: -5,
-                    right: -6,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        shape: const CircleBorder(),
-                        primary: Colors.transparent,
-                        onPrimary: $green200,
-                        elevation: 0,
-                      ),
-                      child: const Icon(
-                        Icons.more_horiz_rounded,
-                        color: $greyColor,
-                      ),
-                      onPressed: () {
-                        _showPopupSelectOptions(
-                          parentId: haveParent == true ? comment.id : null,
-                          idComment: comment.id,
-                        );
-                      },
-                    ),
-                  ),
+                  comment.userId == currentUser.id
+                      ? Positioned(
+                          top: -5,
+                          right: -6,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(0),
+                              shape: const CircleBorder(),
+                              primary: Colors.transparent,
+                              onPrimary: $green200,
+                              elevation: 0,
+                            ),
+                            child: const Icon(
+                              Icons.more_horiz_rounded,
+                              color: $greyColor,
+                            ),
+                            onPressed: () {
+                              _showPopupSelectOptions(
+                                parentId: haveParent == true ? comment.id : null,
+                                idComment: comment.id,
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
                 ],
               ),
               Row(
@@ -330,14 +359,17 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
                 Navigator.pushNamed(
                   context,
                   UrlRoutes.$replyComment,
-                  arguments: ReplyCommentPage(currentComment: reply),
+                  arguments: ReplyCommentPage(
+                    currentComment: reply,
+                    tag: widget.tag,
+                  ),
                 );
               },
             ),
           ),
         );
       }
-      if (reply.numReplies > 4) {
+      if (reply.replies != null && reply.replies!.length >= 3) {
         // API chỉ chả ra 3 comment đầu tiên
         listItem.add(
           Container(
@@ -349,7 +381,10 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
                 Navigator.pushNamed(
                   context,
                   UrlRoutes.$replyComment,
-                  arguments: ReplyCommentPage(currentComment: reply),
+                  arguments: ReplyCommentPage(
+                    currentComment: reply,
+                    tag: widget.tag,
+                  ),
                 );
               },
               child: Text(
@@ -383,7 +418,10 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
               Navigator.pushNamed(
                 context,
                 UrlRoutes.$replyComment,
-                arguments: ReplyCommentPage(currentComment: comment),
+                arguments: ReplyCommentPage(
+                  currentComment: comment,
+                  tag: widget.tag,
+                ),
               );
             },
           ),

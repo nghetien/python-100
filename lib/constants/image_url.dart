@@ -30,6 +30,12 @@ const $assetSVGSendAnswer = "assets/svg/send_answer.svg";
 const $assetSVGPlay = "assets/svg/play.svg";
 const $assetSVGClock = "assets/svg/clock.svg";
 const $assetSVGListQuestion = "assets/svg/list_question.svg";
+const $assetSVGCode = "assets/svg/code.svg";
+const $assetSVGFilm = "assets/svg/film.svg";
+const $assetSVGHelpCircle = "assets/svg/help_circle.svg";
+const $assetSVGLock= "assets/svg/lock.svg";
+const $assetSVGSuccess= "assets/svg/success.svg";
+
 
 const $networkImageDefaultUser = "https://cdn-dev.ucode.vn/uploads/5/avatar/HVbLPFCa.png";
 const $networkImageDefaultBanner = "https://cdn.ucode.vn/uploads/5/upload/voVpTBej.jpg";

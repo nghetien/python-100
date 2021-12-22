@@ -189,6 +189,7 @@ class Routes {
         return SlideLeftRoute(
           builder: (context) => ReplyCommentPage(
             currentComment: args.currentComment,
+            tag: args.tag,
           ),
           settings: settings,
         );

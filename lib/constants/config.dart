@@ -4,10 +4,11 @@ import 'constants.dart';
 
 String? getDomain = FlavorConfig.instance.variables["domain"];
 String? getReference =  FlavorConfig.instance.variables["reference"];
+String mainUrl = "$getDomain$getReference";
 
 // Domain API && Web
 String $domainAPI = "${getDomain}ucodeapis.com";
-String $domainWeb = "https://$getDomain$getReference.vn";
+String $domainWeb = "https://$mainUrl.vn";
 
 // Url fanpage
 const String $urlFanpageUCode = "https://www.facebook.com/ucode.vn";

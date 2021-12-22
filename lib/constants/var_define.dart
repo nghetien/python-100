@@ -50,6 +50,8 @@ const $accepted = "Accepted";
 const $blogPost = "blog_post";
 const $course = "course";
 const $lessonItem = "lesson_item";
+const $lesson = "lesson";
+const $chapter = "chapter";
 const $question = "question";
 
 const $desc = "desc";

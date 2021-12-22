@@ -4,7 +4,6 @@ import 'package:get/state_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/models.dart';
-import '../../lesson_details/models/models.dart';
 import '../../../../constants/constants.dart';
 import '../../../../services/services.dart';
 import '../../../../widgets/widgets.dart';
@@ -12,12 +11,12 @@ import '../../../../widgets/widgets.dart';
 class ReplyCommentController extends GetxController {
   /// init
   final BuildContext myContext;
-  final QuestionData questionData;
+  final int? questionId;
   final Comment parentComment;
 
   ReplyCommentController({
     required this.myContext,
-    required this.questionData,
+    required this.questionId,
     required this.parentComment,
   });
 
@@ -45,7 +44,10 @@ class ReplyCommentController extends GetxController {
     if (res.status) {
       page.value = res.metaData!["current_page"];
       maxPage.value = (res.metaData!["total_items"] / 10).ceil(); // Default pageSize = 10
-      listReply.value = [...[parentComment], ...Comment.createListComment(res.data["data"])];
+      listReply.value = [
+        ...[parentComment],
+        ...Comment.createListComment(res.data["data"])
+      ];
     } else {
       showSnackBar(myContext, message: AppLocalizations.of(myContext)!.load_data_fail, backgroundColor: $errorColor);
     }
@@ -72,13 +74,14 @@ class ReplyCommentController extends GetxController {
     int? parentID,
     required String type,
   }) async {
-    DataResponse res = await feedbackSubmissionResponse({
+    Map<String, dynamic> filters = {
       "content": value,
       "content_format": "plaintext",
-      "question_id": questionData.id,
       "type": type,
-      "parent_id": parentID ?? "",
-    });
+    };
+    if (parentID != null) filters["parent_id"] = parentID;
+    if (questionId != null) filters["question_id"] = questionId;
+    DataResponse res = await feedbackSubmissionResponse(filters);
     if (res.status) {
       await fetchListReply();
     } else {
@@ -86,7 +89,7 @@ class ReplyCommentController extends GetxController {
     }
   }
 
-  void insertNewComment(Comment newComment){
+  void insertNewComment(Comment newComment) {
     listReply.insert(1, newComment);
   }
 

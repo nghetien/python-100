@@ -32,10 +32,9 @@ class CodeEditorPage extends StatefulWidget {
 
 class _CodeEditorPageState extends State<CodeEditorPage> with SingleTickerProviderStateMixin {
   final String $tagCodeEditorController = "TAG_EDITOR_CONTROLLER";
+  final String $tagFeedbackCodeEditor = "TAG_FEEDBACK_CODE_EDITOR";
 
   late final CodeEditorController _codeEditorController;
-  late final HistorySubmissionController _historySubmissionController;
-  late final FeedbackController _feedbackController;
   late final TabController _tabController;
 
   final _debounce = Debounce(seconds: 5);
@@ -70,21 +69,6 @@ class _CodeEditorPageState extends State<CodeEditorPage> with SingleTickerProvid
       ),
       tag: $tagCodeEditorController,
     );
-    _historySubmissionController = Get.put(
-      HistorySubmissionController(
-        myContext: context,
-        questionData: widget.questionData,
-        quizId: widget.quizId,
-      ),
-    );
-    _feedbackController = Get.put(
-      FeedbackController(
-        myContext: context,
-        questionData: widget.questionData,
-        lessonId: widget.quizId,
-        courseId: widget.courseID,
-      ),
-    );
     super.initState();
   }
 
@@ -93,7 +77,7 @@ class _CodeEditorPageState extends State<CodeEditorPage> with SingleTickerProvid
     _debounce.dispose();
     Get.delete<CodeEditorController>(tag: $tagCodeEditorController);
     Get.delete<HistorySubmissionController>();
-    Get.delete<FeedbackController>();
+    Get.delete<FeedbackController>(tag: $tagFeedbackCodeEditor);
     super.dispose();
   }
 
@@ -225,8 +209,15 @@ class _CodeEditorPageState extends State<CodeEditorPage> with SingleTickerProvid
               ),
               HistoryCodeEditor(
                 tagController: $tagCodeEditorController,
+                quizId: widget.quizId,
+                questionData: widget.questionData,
               ),
-              const FeedbackCodeEditor(),
+              FeedbackCodeEditor(
+                courseId: widget.courseID,
+                lessonId: widget.quizId,
+                questionId: widget.questionData.id,
+                tag: $tagFeedbackCodeEditor,
+              ),
             ],
           ),
         ),

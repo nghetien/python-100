@@ -111,11 +111,11 @@ class LessonDetailsController extends GetxController {
   List<CourseItem> _flattenListLesson(List<CourseItem> myList) {
     List<CourseItem> result = [];
     for (CourseItem item in myList) {
-      if (item.items == null || item.items!.isEmpty) {
+      if (item.items.isEmpty) {
         result.add(item);
       } else {
         if (item.lessonItemId == null) {
-          result = [...result, ..._flattenListLesson(item.items ?? [])];
+          result = [...result, ..._flattenListLesson(item.items)];
         } else {
           result.add(item);
         }

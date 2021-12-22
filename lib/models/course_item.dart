@@ -16,7 +16,7 @@ class CourseItem {
   final int? userStartedAt;
   final double? userPercentComplete;
   final int? userLastJoinedAt;
-  final List<CourseItem>? items;
+  final List<CourseItem> items;
 
   CourseItem({
     required this.id,
@@ -36,7 +36,7 @@ class CourseItem {
     this.userStartedAt,
     this.userPercentComplete,
     this.userLastJoinedAt,
-    this.items,
+    required this.items,
   });
 
   static List<CourseItem> createListCourseItem(List<dynamic> dataAPI) {

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/state_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +60,14 @@ class HistorySubmissionController extends GetxController {
     languageID.value = language;
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      fetchHistorySubmission();
+    });
+  }
+
   Future<void> fetchHistorySubmission() async {
     final currentUser = myContext.read<AuthState>().getUserModel;
     DataResponse res = await getHistorySubmissionResponse(questionData.id, {
@@ -79,14 +88,13 @@ class HistorySubmissionController extends GetxController {
     }
   }
 
-  Future<void> reloadHistorySubmission() async {
+  Future<void> reloadHistorySubmission(int userId) async {
     languageID.value = "";
-    final currentUser = myContext.read<AuthState>().getUserModel;
     DataResponse res = await getHistorySubmissionResponse(questionData.id, {
       "page": "1",
       "pageSize": "10",
       "quiz_id": quizId.toString(),
-      "user_id": currentUser.id.toString(),
+      "user_id": userId.toString(),
       "language": "",
     });
     if (res.status) {

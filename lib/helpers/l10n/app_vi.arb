@@ -45,7 +45,7 @@
     "minutes": "Phút",
     "hours": "Giờ",
     "seconds": "Giây",
-    "course_information": "Thông tin khóa học",
+    "course_information": "Thông tin",
     "origin_price": "Giá gốc",
     "price": "Giá hiện tại",
     "try_course": "Học thử",
@@ -225,5 +225,9 @@
     "rank": "Hạng",
     "diff_rank": "Thay đổi hạng",
     "increase": "Tăng",
-    "decrement": "Giảm"
+    "decrement": "Giảm",
+    "chapter": "Chương",
+    "sub_chapter": "Phần",
+    "curriculum": "Mục lục",
+    "course_is_unlocked": "Khóa học đã được kích hoạt"
 }
