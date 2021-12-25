@@ -1,9 +1,12 @@
+import 'dart:io' show Cookie;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 import '../helpers/helpers.dart';
 import '../models/models.dart';
 import '../services/services.dart';
+import '../constants/constants.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -46,6 +49,16 @@ class AuthState extends ChangeNotifier {
         authStatus = AuthStatus.LOGGED_IN;
         // lưu vào đăng nhập vào máy
         await SharedPreferenceHelper().saveUserAccessToken(RequestApi.getHeaderToken);
+        // // -------------------------
+        // // set cookie trên webview
+        final cookieManager = WebviewCookieManager();
+        await cookieManager.setCookies([
+          Cookie($uToken, RequestApi.getHeaderToken)
+            ..domain = "$getDomain$getReference.vn"
+            ..expires = DateTime.now().add(const Duration(days: 30))
+            ..httpOnly = false
+        ]);
+        // // -------------------------
       } else {
         infoUser.setResponseErrorData(infoUser.message);
         authStatus = AuthStatus.NOT_LOGGED_IN;
@@ -109,6 +122,9 @@ class AuthState extends ChangeNotifier {
     authStatus = AuthStatus.NOT_LOGGED_IN;
     _user = User.empty;
     await _googleSignIn.signOut();
+    final cookieManager = WebviewCookieManager();
+    await cookieManager.removeCookie($urlWebViewHome);
+    await cookieManager.clearCookies();
     await SharedPreferenceHelper().clearUserAccessToken();
     notifyListeners();
   }

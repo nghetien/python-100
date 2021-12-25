@@ -65,6 +65,7 @@ class UrlRoutes {
   /// -------------------------------------------------------
   static const $codeEditor = "CODE_EDITOR";
   static const $replyComment = "REPLY_COMMENT";
+  static const $feedback = "FEED_BACK";
   static const $submissionDetail = "SUBMISSION_DETAIL";
 
   /// -------------------------------------------------------
@@ -181,6 +182,18 @@ class Routes {
             quizId: args.quizId,
             questionData: args.questionData,
             courseID: args.courseID,
+          ),
+          settings: settings,
+        );
+      case UrlRoutes.$feedback:
+        final args = settings.arguments as FeedbackCodeEditor;
+        return SlideBottomRoute(
+          builder: (context) => FeedbackCodeEditor(
+            haveAppBar: args.haveAppBar,
+            courseId: args.courseId,
+            lessonId: args.lessonId,
+            questionId: args.questionId,
+            tag: args.tag,
           ),
           settings: settings,
         );

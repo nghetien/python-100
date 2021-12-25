@@ -10,7 +10,7 @@ PODS:
     - Flutter
   - Firebase/CoreOnly (8.9.0):
     - FirebaseCore (= 8.9.0)
-  - firebase_core (1.10.3):
+  - firebase_core (1.10.6):
     - Firebase/CoreOnly (= 8.9.0)
     - Flutter
   - FirebaseCore (8.9.0):
@@ -80,6 +80,8 @@ PODS:
     - Flutter
   - wakelock (0.0.1):
     - Flutter
+  - webview_cookie_manager (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
@@ -100,6 +102,7 @@ DEPENDENCIES:
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - webview_cookie_manager (from `.symlinks/plugins/webview_cookie_manager/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -151,6 +154,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
+  webview_cookie_manager:
+    :path: ".symlinks/plugins/webview_cookie_manager/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -159,7 +164,7 @@ SPEC CHECKSUMS:
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   external_app_launcher: ad55ac844aa21f2d2197d7cec58ff0d0dc40bbc0
   Firebase: 13d8d96499e2635428d5bf0ec675df21f95d9a95
-  firebase_core: c09de176bd168c2a1c57b3e5f9f0ac72b0f667b9
+  firebase_core: c263d7daf1dc92fcd9895e6abdc04872b0ee07ff
   FirebaseCore: 599ee609343eaf4941bd188f85e3aa077ffe325b
   FirebaseCoreDiagnostics: 56fb7216d87e0e6ec2feddefa9d8a392fe8b2c18
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
@@ -184,8 +189,9 @@ SPEC CHECKSUMS:
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
   video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  webview_cookie_manager: eaf920722b493bd0f7611b5484771ca53fed03f7
   webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 
 COCOAPODS: 1.11.0

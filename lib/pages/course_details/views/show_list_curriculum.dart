@@ -46,7 +46,7 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
           listCourseItem: _courseDetailController.listCourseItem,
           idLessonStart: courseItem.lessonItemId,
         ),
-      ).then((value){
+      ).then((value) {
         _courseDetailController.fetchData();
       });
     } else if (courseInfo.isEnrolled == true && courseItem.isFree == true) {
@@ -59,7 +59,7 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
           listCourseItem: _courseDetailController.listCourseItem,
           idLessonStart: courseItem.lessonItemId,
         ),
-      ).then((value){
+      ).then((value) {
         _courseDetailController.fetchData();
       });
     } else if (courseInfo.isEnrolled == true && courseItem.isFree != true) {
@@ -98,7 +98,10 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
         onExpansionChanged: (value) {},
         title: Text(
           courseItem.name,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme
+              .of(context)
+              .textTheme
+              .headline5,
         ),
         iconColor: $primaryColor,
         collapsedIconColor: $greyColor,
@@ -124,7 +127,7 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
         arguments: PaymentPage(
           currentCourse: courseInfo,
         ),
-      ).then((value){
+      ).then((value) {
         _courseDetailController.fetchData();
       });
     }
@@ -135,9 +138,15 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
     required Function onPressCallBack,
   }) {
     Course courseInfo = _courseDetailController.courseInfo.value;
-    Color colorBtn = Theme.of(context).backgroundColor;
+    Color colorBtn = Theme
+        .of(context)
+        .backgroundColor;
     Color borderColorBtn = $neutrals300;
-    Color textColorBtn = Theme.of(context).textTheme.bodyText2!.color ?? $greyColor;
+    Color textColorBtn = Theme
+        .of(context)
+        .textTheme
+        .bodyText2!
+        .color ?? $greyColor;
     Widget iconLeft;
     Widget iconRight = const SizedBox(
       height: 0,
@@ -165,6 +174,11 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
     } else {
       if (lesson.contentType == $video) {
         iconLeft = SvgPicture.asset($assetSVGFilm);
+      } else if (lesson.contentType == $lecture) {
+        iconLeft = Icon(
+          Icons.wysiwyg,
+          color: textColorBtn,
+        );
       } else {
         iconLeft = SvgPicture.asset($assetSVGHelpCircle);
       }
@@ -198,7 +212,10 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
             Flexible(
               child: Text(
                 lesson.name,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -229,9 +246,15 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
     required Function onPressCallBack,
   }) {
     Course courseInfo = _courseDetailController.courseInfo.value;
-    Color colorBtn = Theme.of(context).backgroundColor;
+    Color colorBtn = Theme
+        .of(context)
+        .backgroundColor;
     Color borderColorBtn = $neutrals300;
-    Color textColorBtn = Theme.of(context).textTheme.bodyText2!.color ?? $greyColor;
+    Color textColorBtn = Theme
+        .of(context)
+        .textTheme
+        .bodyText2!
+        .color ?? $greyColor;
     if (lesson.isFree == null || lesson.isFree == false) {
       if (courseInfo.isPaid == null || courseInfo.isPaid == false) {
         colorBtn = $yellow100;
@@ -289,7 +312,10 @@ class _ShowListCurriculumState extends State<ShowListCurriculum> {
                   Flexible(
                     child: Text(
                       lesson.name,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline6,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),

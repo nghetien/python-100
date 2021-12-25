@@ -45,7 +45,6 @@ class _TabContainerState extends State<TabContainer> with SingleTickerProviderSt
             color: $backgroundGreyColor
           ),
           child: TabBar(
-            isScrollable: true,
             controller: _tabController,
             indicatorColor: $primaryColor,
             indicator: const UnderlineTabIndicator(

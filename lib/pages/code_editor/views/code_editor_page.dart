@@ -213,6 +213,7 @@ class _CodeEditorPageState extends State<CodeEditorPage> with SingleTickerProvid
                 questionData: widget.questionData,
               ),
               FeedbackCodeEditor(
+                haveAppBar: false,
                 courseId: widget.courseID,
                 lessonId: widget.quizId,
                 questionId: widget.questionData.id,

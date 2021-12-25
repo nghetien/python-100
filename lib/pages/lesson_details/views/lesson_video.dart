@@ -94,6 +94,7 @@ class _LessonVideoState extends State<LessonVideo> {
             ),
             Expanded(
               child: FeedbackCodeEditor(
+                haveAppBar: false,
                 key: UniqueKey(),
                 tag: $tagFeedbackVideo + "${currentLessonData.id}",
                 courseId: currentCourse.id,

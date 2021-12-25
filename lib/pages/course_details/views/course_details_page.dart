@@ -161,7 +161,6 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
       height: 85,
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: $backgroundGreyColor,
         border: Border(bottom: BorderSide(color: $hoverColor, width: 1.5)),
       ),
       child: Row(
@@ -510,6 +509,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
     return _wrapContainer(
       child: Expanded(
         child: FeedbackCodeEditor(
+          haveAppBar: false,
           tag: $tagFeedbackPage,
           courseId: int.parse(getDomain),
         ),

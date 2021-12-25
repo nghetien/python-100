@@ -30,6 +30,8 @@ class _CountDownQuizState extends State<CountDownQuiz> {
   final LessonQuizController _lessonQuizController = Get.find<LessonQuizController>();
   late final LessonDetailsController _lessonDetailsController;
 
+  final String $tagFeedbackCountDown = "TAG_FEEDBACK_COUNT_DOWN";
+
   /// Load result
   late Result _result;
   String typeLoading = $runningTest;
@@ -442,6 +444,31 @@ class _CountDownQuizState extends State<CountDownQuiz> {
           height: 32,
         ),
         _showHistory(),
+        const SizedBox(
+          height: 24,
+        ),
+        ButtonOutLineWithIcon(
+          widthBtn: double.infinity,
+          paddingBtn: const EdgeInsets.symmetric(vertical: 16),
+          textColor: $primaryColor,
+          borderColorBtn: $primaryColor,
+          textBtn: AppLocalizations.of(context)!.comment,
+          onPressCallBack: () {
+            Navigator.pushNamed(
+              context,
+              UrlRoutes.$feedback,
+              arguments: FeedbackCodeEditor(
+                haveAppBar: true,
+                tag: $tagFeedbackCountDown,
+                lessonId: _lessonQuizController.lessonData.value.id,
+              ),
+            );
+          },
+          iconBtn: const Icon(
+            Icons.comment_outlined,
+            color: $primaryColor,
+          ),
+        ),
         const SizedBox(
           height: 24,
         ),

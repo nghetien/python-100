@@ -13,6 +13,7 @@ import '../../../../models/models.dart';
 import '../../../../states/auth_state.dart';
 
 class FeedbackCodeEditor extends StatefulWidget {
+  final bool haveAppBar;
   final int? courseId;
   final int? lessonId;
   final int? questionId;
@@ -20,6 +21,7 @@ class FeedbackCodeEditor extends StatefulWidget {
 
   const FeedbackCodeEditor({
     Key? key,
+    required this.haveAppBar,
     this.courseId,
     this.lessonId,
     this.questionId,
@@ -38,14 +40,13 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
   @override
   void initState() {
     _feedbackController = Get.put(
-      FeedbackController(
-        myContext: context,
-        questionId: widget.questionId,
-        lessonId: widget.lessonId,
-        courseId: widget.courseId,
-      ),
-      tag: widget.tag
-    );
+        FeedbackController(
+          myContext: context,
+          questionId: widget.questionId,
+          lessonId: widget.lessonId,
+          courseId: widget.courseId,
+        ),
+        tag: widget.tag);
     if (!_feedbackController.isLoadData.value) {
       _feedbackController.loadFeedbackSubmission();
     }
@@ -561,7 +562,8 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
   final FocusNode _focusNodeComment = FocusNode();
 
   _yourComment() {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       height: 65,
       child: Row(
         children: <Widget>[
@@ -625,20 +627,33 @@ class _FeedbackCodeEditorState extends State<FeedbackCodeEditor> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _titleBar(),
-        Expanded(
-          child: _body(),
+    return Scaffold(
+      appBar: widget.haveAppBar ? AppBar(
+        elevation: 0,
+        bottom: PreferredSize(
+          child: Container(
+            color: Theme.of(context).shadowColor,
+            height: 1.0,
+          ),
+          preferredSize: const Size.fromHeight(1),
         ),
-        size.height > 450
-            ? _yourComment()
-            : const SizedBox(
-                height: 0,
-                width: 0,
-              ),
-      ],
+      ) : null,
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _titleBar(),
+          Expanded(
+            child: _body(),
+          ),
+          size.height > 450
+              ? _yourComment()
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+        ],
+      ),
     );
   }
 }
