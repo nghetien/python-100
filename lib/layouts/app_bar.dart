@@ -24,7 +24,7 @@ AppBar customAppBar(BuildContext context) {
     bottom: PreferredSize(
       child: Container(
         color: Theme.of(context).shadowColor,
-        height: 1.0,
+        height: 0.7,
       ),
       preferredSize: const Size.fromHeight(1),
     ),

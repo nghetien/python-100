@@ -1,0 +1,22 @@
+{
+  "provider": "apple_pay",
+  "data": {
+    "merchantIdentifier": "merchant.com.uschool.python101",
+    "displayName": "Python 101",
+    "merchantCapabilities": [
+      "3DS",
+      "debit",
+      "credit"
+    ],
+    "supportedNetworks": [
+      "amex",
+      "visa",
+      "discover",
+      "masterCard"
+    ],
+    "countryCode": "VN",
+    "currencyCode": "VND",
+    "requiredBillingContactFields": null,
+    "requiredShippingContactFields": null
+  }
+}

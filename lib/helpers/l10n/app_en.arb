@@ -229,5 +229,7 @@
     "chapter": "Chapter",
     "sub_chapter": "Subchapter",
     "curriculum": "Curriculum",
-    "course_is_unlocked": "Course is unlocked"
+    "course_is_unlocked": "Course is unlocked",
+    "learn": "Learn",
+    "unlock_all_lesson": "Unlock all lesson"
 }

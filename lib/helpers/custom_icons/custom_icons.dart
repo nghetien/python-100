@@ -28,5 +28,7 @@ class CustomIcons {
   static const IconData list_alt = IconData(0xf022, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData server = IconData(0xf233, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData comment_alt = IconData(0xf27a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData elementor = IconData(0xf430, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData readme = IconData(0xf4d5, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData book_open = IconData(0xf518, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

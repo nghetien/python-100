@@ -229,5 +229,7 @@
     "chapter": "Chương",
     "sub_chapter": "Phần",
     "curriculum": "Mục lục",
-    "course_is_unlocked": "Khóa học đã được kích hoạt"
+    "course_is_unlocked": "Khóa học đã được kích hoạt",
+    "learn": "Học ngay",
+    "unlock_all_lesson": "Mở khóa toàn bộ bài học"
 }

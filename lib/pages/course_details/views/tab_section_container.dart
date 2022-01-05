@@ -3,7 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../constants/constants.dart';
+import '../../../helpers/helpers.dart';
 
+class BottomAppBarItem {
+  final String title;
+  final IconData icon;
+
+  const BottomAppBarItem({
+    required this.title,
+    required this.icon,
+  });
+}
 
 class TabContainer extends StatefulWidget {
   final Widget info;
@@ -23,72 +33,141 @@ class TabContainer extends StatefulWidget {
   _TabContainerState createState() => _TabContainerState();
 }
 
-class _TabContainerState extends State<TabContainer> with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
+class _TabContainerState extends State<TabContainer> {
+  int _currentIndex = 0;
+  late final List<Widget> _screens;
+  late final List<BottomAppBarItem> _listBottomBarItem;
+
+  _setListBottomBar() {
+    _listBottomBarItem = [
+      BottomAppBarItem(
+        // title: AppLocalizations.of(context)!.course_information,
+        title: "Thông tin",
+        icon: CustomIcons.book_open,
+      ),
+      BottomAppBarItem(
+        // title: AppLocalizations.of(context)!.description,
+        title: "Mô tả",
+        icon: CustomIcons.list_alt,
+      ),
+      BottomAppBarItem(
+        // title: AppLocalizations.of(context)!.curriculum,
+        title: "Mục lục",
+        icon: CustomIcons.server,
+      ),
+      BottomAppBarItem(
+        // title: AppLocalizations.of(context)!.comment,
+        title: "Bình luận",
+        icon: CustomIcons.comment_alt,
+      ),
+    ];
+  }
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
+    _screens = [
+      widget.info,
+      widget.description,
+      widget.curriculum,
+      widget.comment,
+    ];
+    _setListBottomBar();
     super.initState();
+  }
+
+  Widget _bottomBarItem({
+    required int index,
+    required String title,
+    required IconData icon,
+  }) {
+    final status = index == _currentIndex;
+    return Expanded(
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(
+          begin: 0,
+          end: status ? 1 : 0,
+        ),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.fastOutSlowIn,
+        builder: (BuildContext context, double value, Widget? child) {
+          return InkWell(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  icon,
+                  color: status ? $primaryColor : $neutrals350,
+                ),
+                Align(
+                  heightFactor: value,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+                      fontFamily: Theme.of(context).textTheme.headline3!.fontFamily,
+                      color: status ? $primaryColor : Colors.transparent,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            onTap: () {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget bottomBar() {
+    List<Widget> listItem = [];
+    for (int index = 0; index < _listBottomBarItem.length; index++) {
+      listItem.add(_bottomBarItem(
+        index: index,
+        title: _listBottomBarItem[index].title,
+        icon: _listBottomBarItem[index].icon,
+      ));
+    }
+    return Container(
+      decoration: BoxDecoration(
+        border: const Border(top: BorderSide(width: 0.6, color: $hoverColor)),
+        color: Theme.of(context).backgroundColor,
+      ),
+      height: 55,
+      child: Row(
+        children: listItem,
+      ),
+    );
+  }
+
+  Widget _showScreen() {
+    return IndexedStack(
+      children: _screens,
+      index: _currentIndex,
+    );
+  }
+
+  Widget _body() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: _showScreen(),
+        ),
+        bottomBar(),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      bottomNavigationBar: PreferredSize(
-        preferredSize: const Size(65, 65),
-        child: Container(
-          height: 65,
-          decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: $hoverColor, width: 1.5)),
-            color: $backgroundGreyColor
-          ),
-          child: TabBar(
-            controller: _tabController,
-            indicatorColor: $primaryColor,
-            indicator: const UnderlineTabIndicator(
-              borderSide: BorderSide(color: $primaryColor, width: 1.5),
-              insets: EdgeInsets.only(bottom: 64),
-            ),
-            labelColor: $primaryColor,
-            labelStyle: Theme.of(context).textTheme.headline6,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 18),
-            unselectedLabelColor: $neutrals400,
-            tabs: [
-              Tab(
-                text: AppLocalizations.of(context)!.course_information,
-                icon: const Icon(Icons.wysiwyg_outlined),
-                iconMargin: const EdgeInsets.all(0),
-              ),
-              Tab(
-                text: AppLocalizations.of(context)!.description,
-                icon: const Icon(Icons.description),
-                iconMargin: const EdgeInsets.all(0),
-              ),
-              Tab(
-                text: AppLocalizations.of(context)!.curriculum,
-                icon: const Icon(Icons.format_list_numbered_outlined),
-                iconMargin: const EdgeInsets.all(0),
-              ),
-              Tab(
-                text: AppLocalizations.of(context)!.comment,
-                icon: const Icon(Icons.comment),
-                iconMargin: const EdgeInsets.all(0),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          widget.info,
-          widget.description,
-          widget.curriculum,
-          widget.comment,
-        ],
-      ),
+      body: _body(),
     );
   }
 }

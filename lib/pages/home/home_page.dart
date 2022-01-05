@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         currentCourse: initCourse,
       );
     } else {
-      return splashLoadingPage(context);
+      return const SizedBox();
     }
   }
 

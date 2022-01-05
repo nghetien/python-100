@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -24,6 +25,7 @@ class ExpandableMultiLevelLesson extends StatefulWidget {
 }
 
 class _ExpandableMultiLevelLessonState extends State<ExpandableMultiLevelLesson> {
+  final CourseDetailController _courseDetailController = Get.find<CourseDetailController>();
   final LessonDetailsController _lessonDetailsController = Get.find<LessonDetailsController>();
 
   _buttonItem({
@@ -45,23 +47,17 @@ class _ExpandableMultiLevelLessonState extends State<ExpandableMultiLevelLesson>
       borderColorBtn = $primaryColor;
       textColorBtn = $primaryColor;
     }
-    Icon iconBtn;
+    Widget iconBtn;
     if (lesson.isLessonGroup == true) {
       iconBtn = Icon(
-        Icons.wysiwyg,
+        CustomIcons.elementor,
         color: textColorBtn,
       );
     } else {
       if (lesson.contentType == $video) {
-        iconBtn = Icon(
-          Icons.play_circle_outline_outlined,
-          color: textColorBtn,
-        );
+        iconBtn = SvgPicture.asset($assetSVGFilm, color: textColorBtn,);
       } else {
-        iconBtn = Icon(
-          Icons.help_outline_outlined,
-          color: textColorBtn,
-        );
+        iconBtn = SvgPicture.asset($assetSVGHelpCircle, color: textColorBtn,);
       }
     }
     return Container(
@@ -139,7 +135,10 @@ class _ExpandableMultiLevelLessonState extends State<ExpandableMultiLevelLesson>
         arguments: PaymentPage(
           currentCourse: widget.courseInfo,
         ),
-      );
+      ).then((value) {
+        _courseDetailController.fetchData();
+        _lessonDetailsController.reloadData();
+      });
     }
   }
 

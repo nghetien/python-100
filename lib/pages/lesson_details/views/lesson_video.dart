@@ -64,18 +64,29 @@ class _LessonVideoState extends State<LessonVideo> {
     });
   }
 
+  _curriculumCourse() {
+    return Column(
+      children: _lessonDetailsController.listCourseItem.map<Widget>((item) {
+        return ExpandableMultiLevelLesson(
+          lessonItem: item,
+          courseInfo: _lessonDetailsController.currentCourse.value,
+        );
+      }).toList(),
+    );
+  }
+
   _showCurriculum() {
     return Expanded(
       child: Obx(() {
         final Course currentCourse = _lessonDetailsController.currentCourse.value;
         final LessonData currentLessonData = _lessonDetailsController.currentLessonData.value;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: Row(
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 16),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -88,20 +99,42 @@ class _LessonVideoState extends State<LessonVideo> {
                   ShowUCoinWithBorder(totalUCoin: currentLessonData.uCoin)
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: FeedbackCodeEditor(
-                haveAppBar: false,
-                key: UniqueKey(),
-                tag: $tagFeedbackVideo + "${currentLessonData.id}",
-                courseId: currentCourse.id,
-                lessonId: currentLessonData.id,
+              const SizedBox(
+                height: 16,
               ),
-            ),
-          ],
+              ButtonOutLineWithIcon(
+                widthBtn: double.infinity,
+                paddingBtn: const EdgeInsets.symmetric(vertical: 16),
+                textColor: $primaryColor,
+                borderColorBtn: $primaryColor,
+                textBtn: AppLocalizations.of(context)!.comment,
+                onPressCallBack: () {
+                  Navigator.pushNamed(
+                    context,
+                    UrlRoutes.$feedback,
+                    arguments: FeedbackCodeEditor(
+                      haveAppBar: true,
+                      tag: $tagFeedbackVideo + "${currentLessonData.id}",
+                      courseId: currentCourse.id,
+                      lessonId: currentLessonData.id,
+                    ),
+                  );
+                },
+                iconBtn: const Icon(
+                  Icons.comment_outlined,
+                  color: $primaryColor,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                AppLocalizations.of(context)!.list_of_lectures,
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              const SizedBox(height: 8),
+              _curriculumCourse(),
+              const SizedBox(height: 24),
+            ],
+          ),
         );
       }),
     );

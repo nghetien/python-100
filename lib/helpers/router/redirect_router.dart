@@ -38,6 +38,7 @@ class UrlRoutes {
   static const $lessonDetails = "LESSON_DETAILS";
   static const $payment = "PAYMENT";
   static const $coursesEnrolled = "COURSES_ENROLLED";
+  static const $infoChapterCurriculum = "INFO_CHAPTER_CURRICULUM";
 
   /// -------------------------------------------------------
   static const $blog = '/blog';
@@ -219,6 +220,15 @@ class Routes {
             listLanguage: args.listLanguage,
             listTestCase: args.listTestCase,
             mapIdWithNameLanguage: args.mapIdWithNameLanguage,
+          ),
+          settings: settings,
+        );
+      case UrlRoutes.$infoChapterCurriculum:
+        final args = settings.arguments as ShowInfoChapterPage;
+        return CustomRoute<bool>(
+          builder: (BuildContext context) => ShowInfoChapterPage(
+            index: args.index,
+            parentIndex: args.parentIndex,
           ),
           settings: settings,
         );

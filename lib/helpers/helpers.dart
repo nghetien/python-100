@@ -5,3 +5,4 @@ export 'locale/locale_provider.dart';
 export 'shared_preference/shared_preference.dart';
 export 'theme/theme.dart';
 export 'validate/validation.dart';
+export 'custom_icons/custom_icons.dart';

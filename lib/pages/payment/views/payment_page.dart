@@ -1,9 +1,11 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pay/pay.dart';
 
 import '../../../helpers/helpers.dart';
 import '../../../models/models.dart';
@@ -38,7 +40,7 @@ class _PaymentPageState extends State<PaymentPage> {
     super.dispose();
   }
 
-  _infoCourse() {
+  Widget _infoCourse() {
     final size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -145,7 +147,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  _vnPay() {
+  Widget _vnPay() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -187,7 +189,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  _customInfoTransfer(String title, String value) {
+  Widget _customInfoTransfer(String title, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -211,7 +213,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  _transfer() {
+  Widget _transfer() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -277,7 +279,74 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  _transaction() {
+  Widget _paymentApple() {
+    final List<PaymentItem> _paymentItems = [
+      PaymentItem(
+        label: widget.currentCourse.name,
+        amount: widget.currentCourse.price.toString(),
+        status: PaymentItemStatus.final_price,
+      )
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          "3. Thanh toán bằng Apple",
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ApplePayButton(
+          paymentConfigurationAsset: 'apple_pay.json',
+          paymentItems: _paymentItems,
+          style: ApplePayButtonStyle.black,
+          type: ApplePayButtonType.buy,
+          width: double.infinity,
+          height: 50,
+          margin: const EdgeInsets.only(top: 15.0),
+          onPaymentResult: (value) {
+            print(value);
+          },
+          onError: (error) {
+            print(error);
+          },
+          loadingIndicator: const Center(
+            child: CircularProgressIndicator(),
+          ),
+
+        ),
+        const SizedBox(
+          height: 32,
+        ),
+      ],
+    );
+  }
+
+  Widget _paymentGoogle() {
+    return const SizedBox(
+      height: 0,
+      width: 0,
+    );
+  }
+
+  Widget _transactionPlatform() {
+    if (Platform.isAndroid) {
+      return _paymentGoogle();
+    } else if (Platform.isIOS) {
+      return _paymentApple();
+    } else {
+      return const SizedBox(
+        height: 0,
+        width: 0,
+      );
+    }
+  }
+
+  Widget _transaction() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -293,61 +362,13 @@ class _PaymentPageState extends State<PaymentPage> {
         const SizedBox(
           height: 24,
         ),
+        _transactionPlatform(),
       ],
     );
   }
 
-  _successPayment() {
-    if (_paymentController.typeTransaction.value == $vnPayQR) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            AppLocalizations.of(context)!.payment_success,
-            style: TextStyle(
-              color: $primaryColor,
-              height: Theme.of(context).textTheme.headline3!.height,
-              fontFamily: Theme.of(context).textTheme.headline3!.fontFamily,
-              fontSize: Theme.of(context).textTheme.headline3!.fontSize,
-              fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-              letterSpacing: Theme.of(context).textTheme.headline3!.letterSpacing,
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            "VNPAY QR",
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            "${AppLocalizations.of(context)!.date_payment}: ${DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.fromMillisecondsSinceEpoch(_paymentController.transactionDateVNPay.value * 1000))}",
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          ButtonFullColorWithIconPrefix(
-            textBtn: AppLocalizations.of(context)!.back_to_course,
-            onPressCallBack: () {
-              Navigator.pop(context);
-            },
-            paddingBtn: const EdgeInsets.symmetric(vertical: 12),
-            widthBtn: double.infinity,
-            iconBtn: const Icon(
-              Icons.arrow_back_outlined,
-              color: $whiteColor,
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-        ],
-      );
-    } else {
+  Widget _successPayment() {
+    if (_paymentController.typeTransaction.value == $transfer) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -455,10 +476,59 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ],
       );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            AppLocalizations.of(context)!.payment_success,
+            style: TextStyle(
+              color: $primaryColor,
+              height: Theme.of(context).textTheme.headline3!.height,
+              fontFamily: Theme.of(context).textTheme.headline3!.fontFamily,
+              fontSize: Theme.of(context).textTheme.headline3!.fontSize,
+              fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              letterSpacing: Theme.of(context).textTheme.headline3!.letterSpacing,
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            "VNPAY QR",
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            "${AppLocalizations.of(context)!.date_payment}: ${DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.fromMillisecondsSinceEpoch(_paymentController.transactionDateVNPay.value * 1000))}",
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          ButtonFullColorWithIconPrefix(
+            textBtn: AppLocalizations.of(context)!.back_to_course,
+            onPressCallBack: () {
+              Navigator.pop(context);
+            },
+            paddingBtn: const EdgeInsets.symmetric(vertical: 12),
+            widthBtn: double.infinity,
+            iconBtn: const Icon(
+              Icons.arrow_back_outlined,
+              color: $whiteColor,
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+        ],
+      );
     }
   }
 
-  _body() {
+  Widget _body() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(

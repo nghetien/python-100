@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+List<int> getRGB(Color color) {
+  return [color.red, color.green, color.blue];
+}
+
+Color generateColor(Color color, double alpha){
+  final List<int> rgb = getRGB(color);
+  return Color.fromRGBO(rgb[0], rgb[1], rgb[2], alpha);
+}
+
 /// green
 const $green600 = Color(0xFF1A8E3A);
 const $green500 = Color(0xFF20B149);
@@ -21,6 +30,7 @@ const $neutrals700 = Color(0xFF141416);
 const $neutrals600 = Color(0xFF23262F);
 const $neutrals500 = Color(0xFF353945);
 const $neutrals400 = Color(0xFF777E90);
+const $neutrals350 = Color(0xFFAAABB4);
 const $neutrals300 = Color(0xFFE6E8EC);
 const $neutrals200 = Color(0xFFF4F5F6);
 const $neutrals100 = Color(0xFFFCFCFD);
